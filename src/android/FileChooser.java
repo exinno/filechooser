@@ -49,38 +49,6 @@ public class FileChooser extends CordovaPlugin {
         }
     }
     
-    private void finishWithResult(JSONArray args) {
-        final String path = getArgument(args, 0, "");
-        File file = new File(path);
-        
-        if (file != null) {
-            Uri uri = Uri.fromFile(file);
-            setResult(RESULT_OK, new Intent().setData(uri));
-            finish();
-        } else {
-            setResult(RESULT_CANCELED);
-            finish();
-        }
-    }
-
-    /**
-     * Convenience method to read a parameter from the list of JSON args.
-     * @param args                      the args passed to the Plugin
-     * @param position          the position to retrieve the arg from
-     * @param defaultString the default to be used if the arg does not exist
-     * @return String with the retrieved value
-     */
-    private static String getArgument(JSONArray args, int position, String defaultString) {
-        String arg = defaultString;
-        if (args.length() > position) {
-            arg = args.optString(position);
-            if (arg == null || "null".equals(arg)) {
-                arg = defaultString;
-            }
-        }
-        return arg;
-    }
-    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if( requestCode == REQUEST_CODE) {
@@ -120,9 +88,6 @@ public class FileChooser extends CordovaPlugin {
             this.callbackContext = callbackContext;
             if (action.equals("open")) {
                 showFileChooser();
-                return true;
-            } else if (action.equlas("setAttachment")){
-                finishWithResult(args);
                 return true;
             }
             else {

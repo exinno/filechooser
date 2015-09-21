@@ -13,6 +13,14 @@
             fail(args);
         }, 'FileChooser', 'open', [params||{}]);
     };
+  
+    FileChooser.prototype.setAttachment = function(filePath, success, fail) {
+        return cordova.exec(function(args) {
+            success(args);
+        }, function(args) {
+            fail(args);
+        }, 'FileChooser', 'setAttachment', [filePath]);
+    };
 
     window.filechooser = new FileChooser();
     

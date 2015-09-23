@@ -13,6 +13,14 @@
             fail(args);
         }, 'FileChooser', 'open', [params||{}]);
     };
+  
+    FileChooser.prototype.isActionGetContent = function(params, success, fail) {
+        return cordova.exec(function(args) {
+            success(args);
+        }, function(args) {
+            fail(args);
+        }, 'FileChooser', 'isActionGetContent', [params||{}]);
+    };
 
     window.filechooser = new FileChooser();
     

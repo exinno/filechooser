@@ -32,6 +32,8 @@ import io.odoc.R;
  */
 public class FileChooser extends CordovaPlugin {
 
+    private static final String TAG = "ODOC_FileChooser";
+    
     private CallbackContext callbackContext = null;
     private static final String TAG = "FileChooser";
     private static final int REQUEST_CODE = 6666; // onActivityResult request code
@@ -85,14 +87,32 @@ public class FileChooser extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) {
-            this.callbackContext = callbackContext;
-            if (action.equals("open")) {
-                showFileChooser();
-                return true;
-            }
-            else {
+        this.callbackContext = callbackContext;
+        if (action.equals("open")) {
+            showFileChooser();
+            return true;
+        } else if (action.equals("isActionGetContent")) {
+            Intent intent = ((CordovaActivity)this.cordova.getActivity()).getIntent();
+            String intentAction = intent.getAction();
+            String intentType = intent.getType();
+            
+            JSONObject obj = new JSONObject();
+            JSONObject extra = new JSONObject();
+            
+            if (Intent.ACTION_GET_CONTENT.equals(intentAction) && intentType != null) {
+                Log.d(TAG, "ACTION_GET_CONTENT");
+                Log.d(TAG, "intentType : " + intentType);
+                extra.put("type", intentType);
+                obj.put("extras", extra);
+            } else {
+                callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR));
                 return false;
             }
+            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, obj.toString()));
+            return true;
+        }
+        else {
+            return false;
+        }
     }
-
 }

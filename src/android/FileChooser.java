@@ -31,8 +31,6 @@ import io.odoc.R;
  * 
  */
 public class FileChooser extends CordovaPlugin {
-
-    private static final String TAG = "ODOC_FileChooser";
     
     private CallbackContext callbackContext = null;
     private static final String TAG = "FileChooser";

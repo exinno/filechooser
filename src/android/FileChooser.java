@@ -90,24 +90,32 @@ public class FileChooser extends CordovaPlugin {
             showFileChooser();
             return true;
         } else if (action.equals("isActionGetContent")) {
-            Intent intent = ((CordovaActivity)this.cordova.getActivity()).getIntent();
-            String intentAction = intent.getAction();
-            String intentType = intent.getType();
+            try {
+                Intent intent = ((CordovaActivity)this.cordova.getActivity()).getIntent();
+                String intentAction = intent.getAction();
+                String intentType = intent.getType();
             
-            JSONObject obj = new JSONObject();
-            JSONObject extra = new JSONObject();
+                JSONObject obj = new JSONObject();
+                JSONObject extra = new JSONObject();
             
-            if (Intent.ACTION_GET_CONTENT.equals(intentAction) && intentType != null) {
-                Log.d(TAG, "ACTION_GET_CONTENT");
-                Log.d(TAG, "intentType : " + intentType);
-                extra.put("type", intentType);
-                obj.put("extras", extra);
-            } else {
-                callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR));
+                if (Intent.ACTION_GET_CONTENT.equals(intentAction) && intentType != null) {
+                    Log.d(TAG, "ACTION_GET_CONTENT");
+                    Log.d(TAG, "intentType : " + intentType);
+                    extra.put("type", intentType);
+                    obj.put("extras", extra);
+                } else {
+                    callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR));
+                    return false;
+                }
+                callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, obj.toString()));
+                return true;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                String errorMessage=e.getMessage();
+                //return new PluginResult(PluginResult.Status.JSON_EXCEPTION);
+                callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.JSON_EXCEPTION,errorMessage));
                 return false;
             }
-            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, obj.toString()));
-            return true;
         }
         else {
             return false;

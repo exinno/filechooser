@@ -21,6 +21,8 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaResourceApi;
 import org.apache.cordova.PluginResult;
+import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.CordovaInterface;
 
 import com.ipaulpro.afilechooser.utils.FileUtils;
 import io.odoc.R;
@@ -35,6 +37,9 @@ public class FileChooser extends CordovaPlugin {
     private CallbackContext callbackContext = null;
     private static final String TAG = "FileChooser";
     private static final int REQUEST_CODE = 6666; // onActivityResult request code
+    
+    private static CordovaWebView gWebView;
+    private static Bundle gCachedExtras = null;
 
     private void showFileChooser() {
         // Use the GET_CONTENT intent from the utility class
@@ -91,7 +96,16 @@ public class FileChooser extends CordovaPlugin {
             return true;
         } else if (action.equals("isActionGetContent")) {
             try {
-                Intent intent = ((CordovaActivity)this.cordova.getActivity()).getIntent();
+                
+                gWebView = this.webView;
+                if ( gCachedExtras != null) {
+                    Log.v(TAG, "sending cached extras");
+                    sendExtras(gCachedExtras);
+                    gCachedExtras = null;
+                }
+
+                
+                Intent intent = ((GetContentActivity)this.cordova.getActivity()).getIntent();
                 String intentAction = intent.getAction();
                 String intentType = intent.getType();
             
@@ -108,6 +122,7 @@ public class FileChooser extends CordovaPlugin {
                     return false;
                 }
                 callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, obj.toString()));
+                
                 return true;
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -120,5 +135,34 @@ public class FileChooser extends CordovaPlugin {
         else {
             return false;
         }
+    }
+    /*
+    public static void sendJavascript(JSONObject _json) {
+        String _d = "javascript:" + gECB + "(" + _json.toString() + ")";
+        Log.v(TAG, "sendJavascript: " + _d);
+        
+        if (gECB != null && gWebView != null) {
+            gWebView.sendJavascript(_d);
+        }
+    }
+    */
+    public static void sendExtras(Bundle extras)
+    {
+        if (extras != null) {
+            if (gWebView != null) {
+                //sendJavascript(convertBundleToJson(extras));
+                Log.d(TAG, "sendExtras....");
+                 gWebView.sendJavascript("javascript:console.log('send to GetContentActivity')");
+                Log.d(TAG, "sended Javascript.");
+            } else {
+                Log.d(TAG, "sendExtras: caching extras to send at a later time.");
+                gCachedExtras = extras;
+            }
+        }
+    }
+    
+    public static boolean isActive()
+    {
+        return gWebView != null;
     }
 }

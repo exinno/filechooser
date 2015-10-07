@@ -36,11 +36,17 @@
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <activity
-                android:name="com.cesidiodibenedetto.filechooser.GetContentActivity">
+                android:name="com.ipaulpro.afilechooser.FileChooserActivity"
+                android:icon="@drawable/ic_chooser"
+                android:enabled="@bool/use_activity"
+                android:exported="true"
+                android:label="@string/choose_file" >
                 <intent-filter>
                     <action android:name="android.intent.action.GET_CONTENT" />
+
                     <category android:name="android.intent.category.DEFAULT" />
                     <category android:name="android.intent.category.OPENABLE" />
+
                     <data android:mimeType="*/*" />
                 </intent-filter>
             </activity>
@@ -56,10 +62,18 @@
                     </intent-filter>
             </provider>            
         </config-file>
+        
+        <config-file target="AndroidManifest.xml" parent="application/activity">
+            <intent-filter>
+                <action android:name="android.intent.action.GET_CONTENT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.OPENABLE" />
+                <data android:mimeType="*/*" />
+            </intent-filter>
+        </config-file>
 
         <!-- cordova plugin src files -->
         <source-file src="src/android/FileChooser.java" target-dir="src/com/cesidiodibenedetto/filechooser" />
-        <source-file src="src/android/GetContentActivity.java" target-dir="src/com/cesidiodibenedetto/filechooser" />
         <source-file src="src/android/filechooser/FileChooserActivity.java" target-dir="src/com/ipaulpro/afilechooser" />
         <source-file src="src/android/filechooser/FileListAdapter.java" target-dir="src/com/ipaulpro/afilechooser" />
         <source-file src="src/android/filechooser/FileListFragment.java" target-dir="src/com/ipaulpro/afilechooser" />

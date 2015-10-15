@@ -59,6 +59,7 @@ public class FileChooser extends CordovaPlugin {
                         final Uri uri = data.getData();
                         Log.i(TAG, "Uri = " + uri.toString());
                         JSONObject obj = new JSONObject();
+                        
                         try {
                             // Get the file path from the URI
                             final String path = FileUtils.getPath(this.cordova.getActivity(), uri);
@@ -73,6 +74,7 @@ public class FileChooser extends CordovaPlugin {
                             obj.put("filepath", path);
                             obj.put("filesize", size);
                             obj.put("filetype", data.getType());
+                            obj.put("file", uri);
                             this.callbackContext.success(obj);
                         } catch (Exception e) {
                             Log.e("FileChooser", "File select error", e);

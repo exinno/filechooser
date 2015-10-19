@@ -17,6 +17,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import android.content.Context;
+import android.content.ContentResolver;
+import android.webkit.MimeTypeMap;
+
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaResourceApi;
@@ -42,6 +47,7 @@ public class FileChooser extends CordovaPlugin {
         // Create the chooser Intent
         Intent intent = Intent.createChooser(
                 target, this.cordova.getActivity().getString(R.string.chooser_title));
+        intent.setType("*/*");
         try {
             this.cordova.startActivityForResult((CordovaPlugin) this, intent, REQUEST_CODE);
         } catch (ActivityNotFoundException e) {
@@ -55,13 +61,25 @@ public class FileChooser extends CordovaPlugin {
                 // If the file selection was successful
                 if (resultCode == Activity.RESULT_OK) {
                     if (data != null) {
-                        String fileType = Utils.ensureNotNull(data.getType());
-                        Log.d(TAG, "11 fileType:" + fileType);
+                        
+                        Log.d(TAG, "11 fileType:" + data.getType());
+                        
+                        
+
                         
                         // Get the URI of the selected file
                         final Uri uri = data.getData();
                         Log.i(TAG, "Uri = " + uri.toString());
                         JSONObject obj = new JSONObject();
+                        
+                        
+                        //Context context = data.getApplicationContext();
+                        
+                        //ContentResolver cR = uri.getContentResolver();
+                        //MimeTypeMap mime = MimeTypeMap.getSingleton();
+                        //String type = mime.getExtensionFromMimeType(cR.getType(uri));
+                        
+                        //Log.d(TAG, "22 fileType:" + type);
                         
                         try {
                             // Get the file path from the URI

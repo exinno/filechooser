@@ -74,6 +74,7 @@ public class FileChooser extends CordovaPlugin {
                             obj.put("filepath", path);
                             obj.put("filesize", size);
                             obj.put("filetype", data.getType());
+                            Log.d(TAG, "fileType:" + data.getType());
                             this.callbackContext.success(obj);
                         } catch (Exception e) {
                             Log.e("FileChooser", "File select error", e);

@@ -68,18 +68,12 @@ public class FileChooser extends CordovaPlugin {
                         Log.i(TAG, "Uri = " + uri.toString());
                         JSONObject obj = new JSONObject();
                         
-                        
-                        //Uri selectedUri = Uri.fromFile(selected);
-                        String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString());
-                        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension);
-                        
-                        Log.d(TAG, "fileExtension:" + fileExtension);
-                        Log.d(TAG, "mimeType:" + mimeType);
-                        
                         try {
                             // Get the file path from the URI
                             final String path = FileUtils.getPath(this.cordova.getActivity(), uri);
                             File file = new File(path);
+                            Uri selectedUri = Uri.fromFile(file);
+                            
                             long size = 0L;
                             if (file.exists()) {
                                 size = file.length();
@@ -91,6 +85,14 @@ public class FileChooser extends CordovaPlugin {
                             obj.put("filesize", size);
                             obj.put("filetype", data.getType());
                             Log.d(TAG, "fileType:" + data.getType());
+                            
+                            
+                            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(selectedUri.toString());
+                            String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension);
+                            
+                            Log.d(TAG, "fileExtension:" + fileExtension);
+                            Log.d(TAG, "mimeType:" + mimeType);
+
                             this.callbackContext.success(obj);
                         } catch (Exception e) {
                             Log.e("FileChooser", "File select error", e);

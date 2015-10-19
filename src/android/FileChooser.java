@@ -47,7 +47,6 @@ public class FileChooser extends CordovaPlugin {
         // Create the chooser Intent
         Intent intent = Intent.createChooser(
                 target, this.cordova.getActivity().getString(R.string.chooser_title));
-        intent.setType("*/*");
         try {
             this.cordova.startActivityForResult((CordovaPlugin) this, intent, REQUEST_CODE);
         } catch (ActivityNotFoundException e) {
@@ -64,22 +63,18 @@ public class FileChooser extends CordovaPlugin {
                         
                         Log.d(TAG, "11 fileType:" + data.getType());
                         
-                        
-
-                        
                         // Get the URI of the selected file
                         final Uri uri = data.getData();
                         Log.i(TAG, "Uri = " + uri.toString());
                         JSONObject obj = new JSONObject();
                         
                         
-                        //Context context = data.getApplicationContext();
+                        //Uri selectedUri = Uri.fromFile(selected);
+                        String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString());
+                        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension);
                         
-                        //ContentResolver cR = uri.getContentResolver();
-                        //MimeTypeMap mime = MimeTypeMap.getSingleton();
-                        //String type = mime.getExtensionFromMimeType(cR.getType(uri));
-                        
-                        //Log.d(TAG, "22 fileType:" + type);
+                        Log.d(TAG, "fileExtension:" + fileExtension);
+                        Log.d(TAG, "mimeType:" + mimeType);
                         
                         try {
                             // Get the file path from the URI

@@ -55,6 +55,8 @@ public class FileChooser extends CordovaPlugin {
                 // If the file selection was successful
                 if (resultCode == Activity.RESULT_OK) {
                     if (data != null) {
+                        String fileType = Utils.ensureNotNull(data.getType());
+                        Log.d(TAG, "11 fileType:" + fileType);
                         // Get the URI of the selected file
                         final Uri uri = data.getData();
                         Log.i(TAG, "Uri = " + uri.toString());

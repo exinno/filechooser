@@ -47,7 +47,7 @@ public class FileChooser extends CordovaPlugin {
         // Create the chooser Intent
         Intent intent = Intent.createChooser(
                 target, this.cordova.getActivity().getString(R.string.chooser_title));
-        intent.setType("*/*");
+        intent.setDataAndType("*/*");
         try {
             this.cordova.startActivityForResult((CordovaPlugin) this, intent, REQUEST_CODE);
         } catch (ActivityNotFoundException e) {

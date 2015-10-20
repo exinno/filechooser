@@ -80,8 +80,8 @@ public class FileChooser extends CordovaPlugin {
                             
                             obj.put("path", path);
                             obj.put("size", size);
-                            obj.put("mimetype", path);
-                            obj.put("extension", size);
+                            obj.put("mimetype", mimeType);
+                            obj.put("extension", fileExtension);
 
                             this.callbackContext.success(obj);
                         } catch (Exception e) {

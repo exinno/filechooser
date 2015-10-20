@@ -16,11 +16,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-
-import android.content.Context;
-import android.content.ContentResolver;
 import android.webkit.MimeTypeMap;
-
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -60,9 +56,6 @@ public class FileChooser extends CordovaPlugin {
                 // If the file selection was successful
                 if (resultCode == Activity.RESULT_OK) {
                     if (data != null) {
-                        
-                        Log.d(TAG, "11 fileType:" + data.getType());
-                        
                         // Get the URI of the selected file
                         final Uri uri = data.getData();
                         Log.i(TAG, "Uri = " + uri.toString());
@@ -81,17 +74,14 @@ public class FileChooser extends CordovaPlugin {
                             else {
                                 size = 0L;
                             }
-                            obj.put("filepath", path);
-                            obj.put("filesize", size);
-                            obj.put("filetype", data.getType());
-                            Log.d(TAG, "fileType:" + data.getType());
-                            
                             
                             String fileExtension = MimeTypeMap.getFileExtensionFromUrl(selectedUri.toString());
                             String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension);
                             
-                            Log.d(TAG, "fileExtension:" + fileExtension);
-                            Log.d(TAG, "mimeType:" + mimeType);
+                            obj.put("path", path);
+                            obj.put("size", size);
+                            obj.put("mimetype", path);
+                            obj.put("extension", size);
 
                             this.callbackContext.success(obj);
                         } catch (Exception e) {
